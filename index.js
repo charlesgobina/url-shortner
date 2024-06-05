@@ -1,18 +1,19 @@
+
 const express = require('express');
+
 const app = express();
 const port = process.env.PORT || 3000;
-const router = express.Router();
 
 // In-memory storage for URLs
 const urlDatabase = {};
 
 app.use(express.json());
 
-router.get('/', (req, res) => {
+app.get('/', (req, res) => {
     res.send('Hello World');
 });
 
-router.post('/shorten', async (req, res) => {
+app.post('/shorten', async (req, res) => {
     const { originalUrl } = req.body;
     const { nanoid } = await import('nanoid');
     const shortId = nanoid(6);
@@ -20,7 +21,7 @@ router.post('/shorten', async (req, res) => {
     res.json({ shortUrl: `${req.protocol}://${req.get('host')}/${shortId}` });
 });
 
-router.get('/:shortId', (req, res) => {
+app.get('/:shortId', (req, res) => {
     const { shortId } = req.params;
     const originalUrl = urlDatabase[shortId];
     if (originalUrl) {
@@ -30,9 +31,8 @@ router.get('/:shortId', (req, res) => {
     }
 });
 
-app.use('/', router);
-
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
 });
 
+module.exports = app;
