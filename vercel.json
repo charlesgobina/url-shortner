@@ -8,8 +8,19 @@
   ],
   "routes": [
     {
+      "src": "/shorten",
+      "methods": ["POST"],
+      "dest": "index.js",
+      "headers": {
+        "cache-control": "no-cache"
+      }
+    },
+    {
       "src": "/(.*)",
-      "dest": "index.js"
+      "dest": "index.js",
+      "headers": {
+        "cache-control": "no-cache"
+      }
     }
   ]
 }
